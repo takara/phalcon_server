@@ -20,14 +20,27 @@ phalcon migration generate
 
 ```
 composer require davedevelopment/phpmig
-vendor/bin/phpmig install
+vendor/bin/phpmig init
 ```
 
+初期化すると[phpmig.php](https://github.com/takara/phalcon_server/blob/master/src/phpmig.php)というファイルが作られるので、phalconと連動できるように書き換える。
+
++ フォルダの書き換え `migrations` → `app/migrations`
++ デフォルトでは現在のバージョンをファイルで管理されるのでDBの中で管理するように変更
++ 専用のクラスで記述される
+
+## テーブル追加
+```
+phpmig generate AddPlayer
+```
+上記コマンドだと以下のようなファイル名で作られる
+`app/migrations/20180726183618_AddPlayer.php`
 
 使ってみてこちらの方が良さそうである。
 
-+ 名前と作った日付で作られる
-
++ 名前と作った日付で作られる（開発者が複数いてもコマンドを叩ける)
++ どのファイルをあてたか、DBで管理される（というかそうした、これにりより複数の環境を最新に保てる）
++ SQLを直接記述するようにした（学習コストが低くなる）
 
 # ユニットテスト
 ## phpunitインストール
@@ -44,3 +57,5 @@ PHP Fatal error:  Class 'Tests\Behat\Gherkin\Keywords\KeywordsTest' not found in
 Fatal error: Class 'Tests\Behat\Gherkin\Keywords\KeywordsTest' not found in /var/www/server/vendor/behat/gherkin/tests/Behat/Gherkin/Keywords/ArrayKeywordsTest.php on line 9
 ```
 
+`Phalcon` と `PHPUnit` は相性悪いのかなぁ？
+何回かやってるけどうまく動かない・・・
